@@ -23,8 +23,16 @@ namespace minecraftCustomToolbox
                 //C:\Users\miche\AppData\Roaming\.minecraft\saves
                 if (newWorldName != null)
                 {
+                    try
+                    {
                     System.IO.Compression.ZipFile.ExtractToDirectory(oneblockTemplate, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\");
                     System.IO.Directory.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\OneBlock Reborn 1.19.3", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\" + newWorldName);
+                        MessageBox.Show("Successfully created your new OneBlock World {0}!", newWorldName);
+                    }
+                    catch(Exception ex) 
+                    {
+                        MessageBox.Show("There was a failure in the world build. Please review the error." + Environment.NewLine.ToString() + ex.Message);
+                    }
                 }
 
                 int f = 0;
