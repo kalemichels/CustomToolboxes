@@ -34,8 +34,6 @@ namespace minecraftCustomToolbox
                         MessageBox.Show("There was a failure in the world build. Please review the error." + Environment.NewLine.ToString() + ex.Message);
                     }
                 }
-
-                int f = 0;
             }
         }
     }
