@@ -1,4 +1,5 @@
 using System.CodeDom;
+using Utilities.JSONSettingsManager;
 
 namespace minecraftCustomToolbox
 {
@@ -11,11 +12,14 @@ namespace minecraftCustomToolbox
 
         private void btnNewOneblockWorld_Click(object sender, EventArgs e)
         {
+
+
             var oneblockTemplate = Directory.GetFiles(
                 System.IO.Directory.GetDirectories(
                     System.IO.Directory.GetCurrentDirectory())
                 .ToList().First(x => x.EndsWith("FileResources")))//Relative to app build
                 .First(x => x.EndsWith("OneBlock1.19.zip"));
+
             //TODO: Develop accessible logic to read settings without having to be on the admin form.
             //TODO: Implement usage of the settings
             if (oneblockTemplate != null)
@@ -46,11 +50,20 @@ namespace minecraftCustomToolbox
 
         private void btnAdministration_Click(object sender, EventArgs e)
         {
+            var configFile = Directory.GetFiles(
+            System.IO.Directory.GetDirectories(
+                System.IO.Directory.GetCurrentDirectory())
+            .ToList().First(x => x.EndsWith("FileResources")))//Relative to app build
+            .FirstOrDefault(x => x.EndsWith("configFile.txt"));
+
+
             var passwordInput = TextMessageBox.Show("What is the admin password?");
             if (passwordInput == "ThisPasswordIsSecure")
             {
-                var adminForm = new frmSettingsAdmin();
-                adminForm.ShowDialog();
+                var x = new JSONSettingsManager(configFile, typeof(minecraftToolboxSetting));
+                x.showConfigSettings();
+                //var adminForm = new frmSettingsAdmin();
+                //adminForm.ShowDialog();
             }
             else
             {

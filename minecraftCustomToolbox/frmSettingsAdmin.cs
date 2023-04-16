@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utilities.JSONSettingsManager;
 
 namespace minecraftCustomToolbox
 {
@@ -22,12 +23,19 @@ namespace minecraftCustomToolbox
 
         private void frmSettingsAdmin_Load(object sender, EventArgs e)
         {
+            
+
             //TODO: Develop some way to enforce a minimum set of settings based on the buttons/functions developed on the screen. To avoid setting dependancy errors
             configFile = Directory.GetFiles(
                 System.IO.Directory.GetDirectories(
                     System.IO.Directory.GetCurrentDirectory())
                 .ToList().First(x => x.EndsWith("FileResources")))//Relative to app build
                 .FirstOrDefault(x => x.EndsWith("configFile.txt"));
+
+            var x = new JSONSettingsManager(configFile,typeof(minecraftToolboxSetting));
+            x.showConfigSettings();
+
+            /*
             if (configFile != null)
             {
                 var jsonText = File.ReadAllText(configFile);
@@ -56,6 +64,7 @@ namespace minecraftCustomToolbox
             {
                 MessageBox.Show("There is no valid configuration file." + Environment.NewLine.ToString() + "One should be created.");
             }
+            */
         }
 
         private void button1_Click(object sender, EventArgs e)
