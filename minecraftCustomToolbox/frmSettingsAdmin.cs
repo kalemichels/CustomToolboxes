@@ -37,18 +37,20 @@ namespace minecraftCustomToolbox
                 DataColumn[] dcArr = y.Select(x => new DataColumn(x.Name)).ToArray();
                 DataTable settingsDT = new DataTable();
                 settingsDT.Columns.AddRange(typeof(minecraftToolboxSetting).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance).Select(x => new DataColumn(x.Name)).ToArray());
-                if (settings != null) settings.ToList().ForEach(x =>
-                {
-                    DataRow dr = settingsDT.NewRow();
-                    dr["SettingName"] = x.SettingName;
-                    dr["SettingValue"] = x.SettingValue;
-                    //Alternatve version, more complicated. Only half-dynamic
-                    //dr[typeof(minecraftToolboxSetting).GetProperties().Select(x => x.Name).First()] = x.SettingName;
-                    //dr[typeof(minecraftToolboxSetting).GetProperties().Select(x => x.Name).Skip(1).First()] = x.SettingValue;
-                    settingsDT.Rows.Add(dr);
-                });
+                
+                //Improved even further with json deserialize to datatable
+                //if (settings != null) settings.ToList().ForEach(x =>
+                //{
+                //    DataRow dr = settingsDT.NewRow();
+                //    dr["SettingName"] = x.SettingName;
+                //    dr["SettingValue"] = x.SettingValue;
+                //    //Alternatve version, more complicated. Only half-dynamic
+                //    //dr[typeof(minecraftToolboxSetting).GetProperties().Select(x => x.Name).First()] = x.SettingName;
+                //    //dr[typeof(minecraftToolboxSetting).GetProperties().Select(x => x.Name).Skip(1).First()] = x.SettingValue;
+                //    settingsDT.Rows.Add(dr);
+                //});
 
-                dataGridView1.DataSource = settingsDT;
+                dataGridView1.DataSource = (DataTable?)JsonConvert.DeserializeObject(jsonText,(typeof(DataTable))) ?? settingsDT;
             }
             else
             {

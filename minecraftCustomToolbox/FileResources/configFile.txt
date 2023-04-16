@@ -1,0 +1,1 @@
+[{"SettingName":"OneBlockOriginZipLocation","SettingValue":".\\FileResources\\OneBlock1.19.zip"}]
