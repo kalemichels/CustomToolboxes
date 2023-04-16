@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMinecraftCustomToolbox));
             btnNewOneblockWorld = new Button();
             groupBox1 = new GroupBox();
-            textBox1 = new TextBox();
+            btnAdministration = new Button();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -59,12 +59,18 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Vanilla Tools";
             // 
-            // textBox1
+            // btnAdministration
             // 
-            textBox1.Location = new Point(364, 236);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(100, 23);
-            textBox1.TabIndex = 2;
+            btnAdministration.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAdministration.BackColor = SystemColors.MenuHighlight;
+            btnAdministration.BackgroundImage = Properties.Resources.chest1;
+            btnAdministration.BackgroundImageLayout = ImageLayout.Stretch;
+            btnAdministration.Location = new Point(738, 388);
+            btnAdministration.Name = "btnAdministration";
+            btnAdministration.Size = new Size(50, 50);
+            btnAdministration.TabIndex = 999;
+            btnAdministration.UseVisualStyleBackColor = false;
+            btnAdministration.Click += btnAdministration_Click;
             // 
             // frmMinecraftCustomToolbox
             // 
@@ -72,19 +78,19 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(800, 450);
-            Controls.Add(textBox1);
+            Controls.Add(btnAdministration);
             Controls.Add(groupBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmMinecraftCustomToolbox";
             Text = "Minecraft Toolbox";
             groupBox1.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Button btnNewOneblockWorld;
         private GroupBox groupBox1;
-        private TextBox textBox1;
+        private Button btnAdministration;
     }
 }

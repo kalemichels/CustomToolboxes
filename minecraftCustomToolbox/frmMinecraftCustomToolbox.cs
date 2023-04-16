@@ -14,8 +14,10 @@ namespace minecraftCustomToolbox
             var oneblockTemplate = Directory.GetFiles(
                 System.IO.Directory.GetDirectories(
                     System.IO.Directory.GetCurrentDirectory())
-                .ToList().First(x => x.EndsWith("FileResources")))
+                .ToList().First(x => x.EndsWith("FileResources")))//Relative to app build
                 .First(x => x.EndsWith("OneBlock1.19.zip"));
+            //TODO: Develop accessible logic to read settings without having to be on the admin form.
+            //TODO: Implement usage of the settings
             if (oneblockTemplate != null)
             {
                 var newWorldName = TextMessageBox.Show("What would you like to call the new world?");
@@ -25,22 +27,41 @@ namespace minecraftCustomToolbox
                 {
                     try
                     {
-                    System.IO.Compression.ZipFile.ExtractToDirectory(oneblockTemplate, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\");
-                    System.IO.Directory.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\OneBlock Reborn 1.19.3", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\" + newWorldName);
+                        System.IO.Compression.ZipFile.ExtractToDirectory(oneblockTemplate, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\");
+                        System.IO.Directory.Move(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\tmp\\OneBlock Reborn 1.19.3", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft\\saves\\" + newWorldName);
                         MessageBox.Show("Successfully created your new OneBlock World {0}!", newWorldName);
                     }
-                    catch(Exception ex) 
+                    catch (Exception ex)
                     {
                         MessageBox.Show("There was a failure in the world build. Please review the error." + Environment.NewLine.ToString() + ex.Message);
                     }
+                    int i = 0;
+                }
+                else
+                {
+                    MessageBox.Show("New world was cancelled.");
                 }
             }
         }
-    }
 
+        private void btnAdministration_Click(object sender, EventArgs e)
+        {
+            var passwordInput = TextMessageBox.Show("What is the admin password?");
+            if(passwordInput == "ThisPasswordIsSecure")
+            {
+                var adminForm = new frmSettingsAdmin();
+                adminForm.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("No, that is incorrect.");
+            }
+        }
+    }
+    #region Custom Message Boxes
     public partial class frmTextMessageBox : Form
     {
-        public string response;
+        public string? response;
         public frmTextMessageBox(string message)
         {
             Text = "Prompt";
@@ -48,6 +69,8 @@ namespace minecraftCustomToolbox
             lblOne.Text = message;
             lblOne.Location = new System.Drawing.Point(5, this.Top + 5);
             lblOne.Size = new System.Drawing.Size(300, 23);
+            //Set size relative to the 'largest' expected object on the screen, with a minimum width of 100
+            this.Size = new System.Drawing.Size(Math.Max(lblOne.Width + 20, 100), 200);
 
 
             TextBox txOne = new TextBox();
@@ -57,23 +80,33 @@ namespace minecraftCustomToolbox
             txOne.TextChanged += UpdateResponse;
 
             Button btnSubmit = new Button();
-            btnSubmit.Size = new System.Drawing.Size(40, 40);
-            btnSubmit.Location = new System.Drawing.Point(5, Bottom - btnSubmit.Size.Height - 50);
             btnSubmit.Text = "Ok";
-            btnSubmit.Click += CloseForm;
+            btnSubmit.Size = new System.Drawing.Size((btnSubmit.Text.Length * 10) + 10, 40);
+            btnSubmit.Location = new System.Drawing.Point(5, Bottom - btnSubmit.Size.Height - 50);
+            btnSubmit.Click += SubmitForm;
+
+            Button btnCancel = new Button();
+            btnCancel.Text = "Cancel";
+            btnCancel.Location = new System.Drawing.Point(btnSubmit.Location.X + btnSubmit.Width + 10, Bottom - btnSubmit.Size.Height - 50);
+            btnCancel.Size = new System.Drawing.Size((btnCancel.Text.Length * 10) + 10, 40);
+            btnCancel.Click += CancelForm;
 
             Controls.Add(lblOne);
             Controls.Add(txOne);
             Controls.Add(btnSubmit);
-
+            Controls.Add(btnCancel);
         }
-        public void UpdateResponse(object sender, EventArgs e)
+        public void UpdateResponse(object? sender, EventArgs e)
         {
-            response = ((TextBox)sender).Text;
+            if (!(sender == null)) response = ((TextBox)sender).Text;
         }
-        public void CloseForm(object sender, EventArgs e)
+        public void SubmitForm(object? sender, EventArgs e)
         {
-            var x = 0;
+            this.Close();
+        }
+        public void CancelForm(object? sender, EventArgs e)
+        {
+            response = null;
             this.Close();
         }
 
@@ -89,5 +122,6 @@ namespace minecraftCustomToolbox
             }
         }
     }
+    #endregion
 
 }
