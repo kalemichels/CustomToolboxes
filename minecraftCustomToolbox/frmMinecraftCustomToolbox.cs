@@ -47,7 +47,7 @@ namespace minecraftCustomToolbox
         private void btnAdministration_Click(object sender, EventArgs e)
         {
             var passwordInput = TextMessageBox.Show("What is the admin password?");
-            if(passwordInput == "ThisPasswordIsSecure")
+            if (passwordInput == "ThisPasswordIsSecure")
             {
                 var adminForm = new frmSettingsAdmin();
                 adminForm.ShowDialog();
